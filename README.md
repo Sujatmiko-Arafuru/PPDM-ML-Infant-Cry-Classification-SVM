@@ -46,7 +46,7 @@ InfantCryClassification/
 ├── deploy_preprocess.py         # Preprocessing untuk deployment
 ├── deploy_function.py           # Flow penerapan model pada deployment
 ├── streamlit_fix.py             # Aplikasi web Streamlit
-├── svm_classes.py               # Bridge deployment streamlit (Pengganti svm_python.py)
+├── svm_classes.py               # Bridge deployment streamlit (pengganti svm_python.py)
 └── best_svm_model.pkl           # Model SVM terbaik (trained)
 ```
 
@@ -235,7 +235,10 @@ cd InfantCryClassification
 ```
 
 ### 2. Install Dependencies
-- Install seluruh dependensi sesuai informasi requirement dibawah
+  Tidak diperlukan untuk menginstall dependencies lainnya, cukup lakukan :
+- Set interpreter virtual environtment pada selected interpreter .\.venv\Scripts\python.exe 
+- Input command pada terminal IDE ".venv\Scripts\Activate"
+
 
 ### 3. Setup Dataset
 - Download dataset melalui dataset kaggle berikut https://www.kaggle.com/datasets/warcoder/infant-cry-audio-corpus
@@ -267,15 +270,6 @@ jupyter notebook svm.ipynb
 ```bash
 # Menjalankan aplikasi Streamlit
 streamlit run streamlit_fix.py
-```
-
-##  Requirements
-
-### Python Dependencies
-```
-Tidak diperlukan untuk menginstall dependencies lainnya, cukup lakukan :
-- Set interpreter virtual environtment pada selected interpreter .\.venv\Scripts\python.exe && 
-- Input command pada terminal IDE ".venv\Scripts\Activate"
 ```
 
 ##  Konfigurasi
