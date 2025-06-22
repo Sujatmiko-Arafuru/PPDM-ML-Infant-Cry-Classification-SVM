@@ -201,7 +201,7 @@ result = classifier.predict("audio_file.wav", return_probabilities=True)
 - **Main Panel**: Hasil prediksi dan visualisasi
 - **Responsive Design**: Optimized untuk desktop dan mobile
 
-**Menjalankan Aplikasi (Perhatikan Requirement di bawah sebelum menjalankan Streamlit)**:
+**Menjalankan Aplikasi (PERHATIKAN INSTALASI DAN SETUP SEBELUM MENJALANKAN STREAMLIT)**:
 ```bash
 streamlit run streamlit_fix.py
 ```
