@@ -234,10 +234,41 @@ git clone <repository-url>
 cd InfantCryClassification
 ```
 
-### 2. Install Dependencies
-  Tidak diperlukan untuk menginstall dependencies lainnya, cukup lakukan :
-- Set interpreter virtual environtment pada selected interpreter ```.\.venv\Scripts\python.exe```
-- Input command pada terminal IDE ```.venv\Scripts\Activate```
+### 2. Setup Virtual Environment
+
+#### Untuk Windows:
+```bash
+# Membuat virtual environment
+python -m venv .venv
+
+# Mengaktifkan virtual environment
+.venv\Scripts\activate
+```
+
+#### Untuk macOS/Linux:
+```bash
+# Membuat virtual environment
+python -m venv .venv
+
+# Mengaktifkan virtual environment
+source .venv/bin/activate
+```
+
+### 3. Install Dependencies
+```bash
+# Install semua package yang diperlukan
+pip install -r requirements.txt
+```
+
+### 4. Setup VS Code Interpreter
+1. Buka VS Code di folder project
+2. Tekan `Ctrl+Shift+P` (Windows) atau `Cmd+Shift+P` (macOS)
+3. Ketik "Python: Select Interpreter"
+4. Pilih interpreter dari virtual environment:
+   - Windows: `.venv\Scripts\python.exe`
+   - macOS/Linux: `.venv/bin/python`
+
+**📖 Untuk instruksi setup lengkap dan troubleshooting, lihat file [SETUP_ENVIRONMENT.md](SETUP_ENVIRONMENT.md)**
 
 ### 3. Setup Dataset
 - Download dataset melalui dataset kaggle berikut https://www.kaggle.com/datasets/warcoder/infant-cry-audio-corpus
