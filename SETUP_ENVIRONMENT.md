@@ -12,7 +12,30 @@ git clone <repository-url>
 cd InfantCryClassification
 ```
 
-### 2. Membuat Virtual Environment
+### 2. Setup Otomatis (Recommended)
+
+#### Untuk Windows:
+```bash
+# Opsi 1: Double-click file setup.bat
+# Atau jalankan di Command Prompt/PowerShell:
+setup.bat
+
+# Opsi 2: Langsung dengan Python
+python setup.py
+```
+
+#### Untuk macOS/Linux:
+```bash
+python3 setup.py
+# atau
+python setup.py
+```
+
+### 3. Setup Manual (Jika Diperlukan)
+
+Jika setup otomatis gagal, ikuti langkah manual berikut:
+
+#### 3.1. Membuat Virtual Environment
 
 #### Untuk Windows:
 ```bash

@@ -9,8 +9,13 @@
 git clone <repository-url>
 cd InfantCryClassification
 
-# 2. Setup otomatis dengan script Python
-python setup.py
+# 2. Setup otomatis
+# Windows (pilih salah satu):
+setup.bat          # Double-click atau jalankan di Command Prompt
+python setup.py     # Atau langsung dengan Python
+
+# macOS/Linux:
+python3 setup.py    # Atau python setup.py
 ```
 
 Setelah setup selesai, jalankan aplikasi:
@@ -70,7 +75,8 @@ InfantCryClassification/
 ├── deploy_function.py           # Flow penerapan model pada deployment
 ├── streamlit_fix.py             # Aplikasi web Streamlit
 ├── svm_classes.py               # Bridge deployment streamlit (pengganti svm_python.py)
-├── setup.py                     # Script setup otomatis environment
+├── setup.py                     # Script setup otomatis environment (Python)
+├── setup.bat                    # Script setup otomatis untuk Windows
 ├── requirements.txt             # Dependencies Python
 ├── SETUP_ENVIRONMENT.md         # Panduan setup lengkap
 └── best_svm_model.pkl           # Model SVM terbaik (trained)
@@ -264,7 +270,12 @@ git clone <repository-url>
 cd InfantCryClassification
 
 # 2. Jalankan script setup otomatis
-python setup.py
+# Windows (pilih salah satu):
+setup.bat          # Double-click atau jalankan di Command Prompt  
+python setup.py     # Langsung dengan Python
+
+# macOS/Linux:
+python3 setup.py    # Atau python setup.py
 ```
 
 Script `setup.py` akan otomatis:

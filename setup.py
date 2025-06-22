@@ -1,7 +1,10 @@
-#!/usr/bin/env python3
 """
 Script setup otomatis untuk Infant Cry Classification Project
 Menangani pembuatan virtual environment dan instalasi dependencies
+
+Cara menjalankan:
+- Windows: python setup.py
+- macOS/Linux: python3 setup.py atau python setup.py
 """
 
 import os
