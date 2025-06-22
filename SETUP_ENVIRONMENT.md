@@ -16,11 +16,6 @@ cd InfantCryClassification
 
 #### Untuk Windows:
 ```bash
-# Opsi 1: Double-click file setup.bat
-# Atau jalankan di Command Prompt/PowerShell:
-setup.bat
-
-# Opsi 2: Langsung dengan Python
 python setup.py
 ```
 
@@ -140,8 +135,8 @@ pip install numba
 
 ### Problem: Setup.py gagal dengan error permission
 **Solusi:**
-1. Jalankan Command Prompt sebagai Administrator
-2. Atau disable antivirus sementara
+1. Jalankan Command Prompt/PowerShell sebagai Administrator
+2. Pastikan antivirus tidak memblokir Python
 3. Atau coba setup manual step by step
 
 ## Catatan Penting
