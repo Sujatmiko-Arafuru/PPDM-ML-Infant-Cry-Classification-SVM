@@ -236,7 +236,7 @@ cd InfantCryClassification
 
 ### 2. Install Dependencies
   Tidak diperlukan untuk menginstall dependencies lainnya, cukup lakukan :
-- Set interpreter virtual environtment pada selected interpreter .\.venv\Scripts\python.exe 
+- Set interpreter virtual environtment pada selected interpreter ```.\.venv\Scripts\python.exe```
 - Input command pada terminal IDE ".venv\Scripts\Activate"
 
 
