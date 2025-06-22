@@ -1,5 +1,28 @@
 #  Klasifikasi Tangisan Bayi Menggunakan Support Vector Machine (SVM)
 
+##  Quick Start
+
+**Setup environment dalam 2 langkah:**
+
+```bash
+# 1. Clone repository
+git clone <repository-url>
+cd InfantCryClassification
+
+# 2. Setup otomatis dengan script Python
+python setup.py
+```
+
+Setelah setup selesai, jalankan aplikasi:
+```bash
+# Aktifkan virtual environment
+.venv\Scripts\activate  # Windows
+# source .venv/bin/activate  # macOS/Linux
+
+# Jalankan aplikasi Streamlit
+streamlit run streamlit_fix.py
+```
+
 ##  Deskripsi Proyek
 
 Proyek ini merupakan implementasi sistem klasifikasi tangisan bayi menggunakan algoritma Support Vector Machine (SVM) yang diimplementasikan dari awal (*from scratch*) dengan algoritma Sequential Minimal Optimization (SMO). Sistem ini dapat mengklasifikasikan tangisan bayi ke dalam 5 kategori berbeda berdasarkan analisis sinyal audio.
@@ -47,6 +70,9 @@ InfantCryClassification/
 ├── deploy_function.py           # Flow penerapan model pada deployment
 ├── streamlit_fix.py             # Aplikasi web Streamlit
 ├── svm_classes.py               # Bridge deployment streamlit (pengganti svm_python.py)
+├── setup.py                     # Script setup otomatis environment
+├── requirements.txt             # Dependencies Python
+├── SETUP_ENVIRONMENT.md         # Panduan setup lengkap
 └── best_svm_model.pkl           # Model SVM terbaik (trained)
 ```
 
@@ -228,15 +254,39 @@ Kategori yang lebih challenging:
 
 ##  Instalasi dan Setup
 
-### 1. Clone Repository
+###  Setup Otomatis (Recommended)
+
+**Cara tercepat untuk setup environment:**
+
+```bash
+# 1. Clone repository
+git clone <repository-url>
+cd InfantCryClassification
+
+# 2. Jalankan script setup otomatis
+python setup.py
+```
+
+Script `setup.py` akan otomatis:
+-  Mengecek versi Python
+-  Membuat virtual environment (.venv)
+-  Install semua dependencies dari requirements.txt
+-  Setup VS Code settings untuk interpreter
+-  Memberikan instruksi langkah selanjutnya
+
+###  Setup Manual
+
+Jika ingin setup secara manual:
+
+#### 1. Clone Repository
 ```bash
 git clone <repository-url>
 cd InfantCryClassification
 ```
 
-### 2. Setup Virtual Environment
+#### 2. Setup Virtual Environment
 
-#### Untuk Windows:
+**Untuk Windows:**
 ```bash
 # Membuat virtual environment
 python -m venv .venv
@@ -245,7 +295,7 @@ python -m venv .venv
 .venv\Scripts\activate
 ```
 
-#### Untuk macOS/Linux:
+**Untuk macOS/Linux:**
 ```bash
 # Membuat virtual environment
 python -m venv .venv
@@ -254,13 +304,13 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-### 3. Install Dependencies
+#### 3. Install Dependencies
 ```bash
 # Install semua package yang diperlukan
 pip install -r requirements.txt
 ```
 
-### 4. Setup VS Code Interpreter
+#### 4. Setup VS Code Interpreter
 1. Buka VS Code di folder project
 2. Tekan `Ctrl+Shift+P` (Windows) atau `Cmd+Shift+P` (macOS)
 3. Ketik "Python: Select Interpreter"
@@ -268,7 +318,7 @@ pip install -r requirements.txt
    - Windows: `.venv\Scripts\python.exe`
    - macOS/Linux: `.venv/bin/python`
 
-**📖 Untuk instruksi setup lengkap dan troubleshooting, lihat file [SETUP_ENVIRONMENT.md](SETUP_ENVIRONMENT.md)**
+** Untuk instruksi setup lengkap dan troubleshooting, lihat file [SETUP_ENVIRONMENT.md](SETUP_ENVIRONMENT.md)**
 
 ### 3. Setup Dataset
 - Download dataset melalui dataset kaggle berikut https://www.kaggle.com/datasets/warcoder/infant-cry-audio-corpus
