@@ -114,6 +114,19 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
+### Problem: Error "To modify pip, please run the following command"
+**Solusi:**
+```bash
+# Aktifkan virtual environment terlebih dahulu
+.venv\Scripts\activate
+
+# Upgrade pip dengan cara yang benar
+python -m pip install --upgrade pip
+
+# Lalu install requirements
+pip install -r requirements.txt
+```
+
 ### Problem: Error saat install librosa atau numba
 **Solusi:**
 ```bash
@@ -124,6 +137,12 @@ pip install scipy
 pip install librosa
 pip install numba
 ```
+
+### Problem: Setup.py gagal dengan error permission
+**Solusi:**
+1. Jalankan Command Prompt sebagai Administrator
+2. Atau disable antivirus sementara
+3. Atau coba setup manual step by step
 
 ## Catatan Penting
 

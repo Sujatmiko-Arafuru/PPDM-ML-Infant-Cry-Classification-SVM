@@ -12,7 +12,7 @@ import sys
 import subprocess
 import platform
 
-def run_command(command, description=""):
+def run_command(command, description="", allow_failure=False):
     """Menjalankan command dan menangani error"""
     print(f"\n🔄 {description}")
     print(f"Menjalankan: {command}")
@@ -21,12 +21,22 @@ def run_command(command, description=""):
         result = subprocess.run(command, shell=True, check=True, 
                               capture_output=True, text=True)
         print(f"✅ {description} berhasil!")
+        if result.stdout.strip():
+            print(f"Output: {result.stdout.strip()}")
         return True
     except subprocess.CalledProcessError as e:
-        print(f"❌ Error: {e}")
-        print(f"Output: {e.stdout}")
-        print(f"Error: {e.stderr}")
-        return False
+        if allow_failure:
+            print(f"⚠️  {description} gagal, tapi dilanjutkan")
+            if e.stderr:
+                print(f"Error: {e.stderr.strip()}")
+            return True
+        else:
+            print(f"❌ Error: {e}")
+            if e.stdout:
+                print(f"Output: {e.stdout.strip()}")
+            if e.stderr:
+                print(f"Error: {e.stderr.strip()}")
+            return False
 
 def check_python_version():
     """Mengecek versi Python"""
@@ -67,18 +77,34 @@ def get_activation_command():
 def install_requirements():
     """Install requirements"""
     if platform.system() == "Windows":
+        python_path = ".venv\\Scripts\\python.exe"
         pip_path = ".venv\\Scripts\\pip"
     else:
+        python_path = ".venv/bin/python"
         pip_path = ".venv/bin/pip"
     
-    # Upgrade pip terlebih dahulu
-    if not run_command(f"{pip_path} install --upgrade pip", 
-                      "Upgrade pip"):
-        return False
+    # Upgrade pip menggunakan python -m pip (lebih reliable)
+    print("\n🔄 Upgrade pip")
+    print(f"Menjalankan: {python_path} -m pip install --upgrade pip")
     
-    # Install requirements
-    return run_command(f"{pip_path} install -r requirements.txt", 
-                      "Install dependencies dari requirements.txt")
+    try:
+        result = subprocess.run(f"{python_path} -m pip install --upgrade pip", 
+                              shell=True, check=True, capture_output=True, text=True)
+        print("✅ Upgrade pip berhasil!")
+    except subprocess.CalledProcessError as e:
+        # Jika upgrade pip gagal, lanjutkan saja (tidak critical)
+        print("⚠️  Upgrade pip gagal, tapi akan lanjutkan install dependencies")
+        print(f"Error: {e.stderr}")
+    
+    # Install requirements dengan fallback method
+    if run_command(f"{pip_path} install -r requirements.txt", 
+                   "Install dependencies dari requirements.txt"):
+        return True
+    
+    # Jika gagal, coba dengan python -m pip
+    print("\n⚠️  Instalasi dengan pip gagal, mencoba dengan python -m pip...")
+    return run_command(f"{python_path} -m pip install -r requirements.txt", 
+                      "Install dependencies dengan python -m pip")
 
 def create_vscode_settings():
     """Membuat settings VS Code untuk interpreter"""

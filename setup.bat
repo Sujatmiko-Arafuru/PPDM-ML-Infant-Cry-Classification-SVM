@@ -23,8 +23,14 @@ python setup.py
 
 if errorlevel 1 (
     echo.
-    echo ❌ Setup gagal! Coba jalankan manual:
-    echo    python setup.py
+    echo ❌ Setup gagal! 
+    echo.
+    echo 🔧 Troubleshooting:
+    echo 1. Pastikan tidak ada antivirus yang memblokir
+    echo 2. Jalankan Command Prompt sebagai Administrator
+    echo 3. Coba setup manual: lihat SETUP_ENVIRONMENT.md
+    echo 4. Atau coba: python -m pip install -r requirements.txt
+    echo.
     pause
     exit /b 1
 )
