@@ -236,12 +236,10 @@ cd InfantCryClassification
 ```
 
 ### 2. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
+- install seluruh dependensi sesuai informasi requirement dibawah
 
 ### 3. Setup Dataset
-- Download dataset DonateACry
+- Download dataset melalui dataset kaggle berikut https://www.kaggle.com/datasets/warcoder/infant-cry-audio-corpus
 - Ekstrak ke folder `dataset ppdm2 asli/donateacry_corpus/`
 - Struktur folder harus sesuai dengan 5 kategori tangisan
 
@@ -259,7 +257,7 @@ python preprocess3.py
 
 ### 5. Training Model
 ```bash
-# Training SVM dengan grid search
+# Training SVM versi pyhton
 python svm_python.py
 
 # Atau menggunakan Jupyter notebook
@@ -288,12 +286,6 @@ scikit-learn>=1.0.0
 joblib>=1.1.0
 ```
 
-### System Requirements
-- Python 3.8+
-- RAM: Minimum 8GB (16GB recommended)
-- Storage: 5GB untuk dataset dan model
-- Audio codec support untuk MP3/WAV
-
 ##  Konfigurasi
 
 ### Parameter Preprocessing (`preprocess_config.py`)
@@ -313,80 +305,3 @@ joblib>=1.1.0
 - `TRAIN_SIZE = 0.7`
 - `VAL_SIZE = 0.15`
 - `TEST_SIZE = 0.15`
-
-##  Testing dan Validasi
-
-### Unit Testing
-- Validasi preprocessing pipeline
-- Testing ekstraksi fitur
-- Verifikasi konsistensi model
-
-### Integration Testing  
-- End-to-end testing dari audio input hingga prediksi
-- Testing deployment pipeline
-- Validasi Streamlit app
-
-### Performance Testing
-- Benchmark waktu preprocessing
-- Memory usage profiling
-- Stress testing dengan multiple files
-
-##  Monitoring dan Logging
-
-### Model Performance
-- Tracking accuracy per kategori
-- Monitoring prediction confidence
-- Alert untuk prediction anomali
-
-### System Metrics
-- Response time monitoring
-- Memory usage tracking
-- Error rate monitoring
-
-##  Future Improvements
-
-### Model Enhancement
-- **Deep Learning**: Implementasi CNN/RNN untuk perbandingan
-- **Ensemble Methods**: Kombinasi multiple models
-- **Transfer Learning**: Fine-tuning pre-trained models
-
-### Feature Engineering
-- **Spectral Features**: Menambah fitur spektral lainnya
-- **Temporal Features**: Fitur berbasis sequence
-- **Advanced MFCC**: Delta dan delta-delta coefficients
-
-### Deployment Optimization
-- **Model Compression**: Quantization untuk model yang lebih kecil
-- **Edge Deployment**: Optimasi untuk mobile/embedded
-- **API Service**: REST API untuk integration
-
-### User Experience
-- **Real-time Processing**: Streaming audio classification
-- **Mobile App**: Native mobile application
-- **Voice Assistant**: Integration dengan smart speakers
-
-##  Kontribusi
-
-### Development Guidelines
-1. Fork repository
-2. Create feature branch
-3. Implement changes dengan testing
-4. Submit pull request dengan dokumentasi
-
-### Code Style
-- Follow PEP 8 untuk Python code
-- Dokumentasi lengkap untuk setiap function
-- Type hints untuk better code clarity
-
-##  Lisensi
-
-Proyek ini menggunakan lisensi MIT. Lihat file LICENSE untuk detail lengkap.
-
-##  Acknowledgments
-
-- **DonateACry Dataset**: Terima kasih kepada kontributor dataset
-- **Librosa Library**: Untuk audio processing utilities
-- **Streamlit**: Untuk framework web app yang mudah digunakan
-- **Scikit-learn**: Untuk referensi implementasi machine learning
-
-
