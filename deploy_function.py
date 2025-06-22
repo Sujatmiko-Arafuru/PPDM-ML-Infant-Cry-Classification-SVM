@@ -12,9 +12,14 @@ import sys
 from deploy_preprocess import AudioPreprocessor, get_label_name, validate_audio_file
 from preprocess_config import *
 
-# Import class SVM yang diperlukan untuk loading model
-sys.path.append('.')
+# Import untuk pickle deserialization - Harus ada di global scope
+import svm_classes
 from svm_classes import KernelSVM, OneVsRestSVM
+
+# Workaround untuk pickle deserialization - kedua class dibutuhkan
+import __main__
+__main__.KernelSVM = KernelSVM
+__main__.OneVsRestSVM = OneVsRestSVM
 
 class BabyCryClassifier:
     """
@@ -189,159 +194,3 @@ class BabyCryClassifier:
             info["prediction_time"] = self.model_info.get('prediction_time', 'N/A')
         
         return info
-
-# def demo_prediction():
-#     """
-#     Demo prediksi menggunakan file audio dari dataset
-#     """
-#     print("\n🎯 Demo Prediksi Klasifikasi Tangisan Bayi")
-#     print("=" * 60)
-    
-#     # Inisialisasi classifier
-#     classifier = BabyCryClassifier(
-#         model_path=BEST_MODEL_PATH,
-#         scaler_path=SCALER_PATH
-#     )
-    
-#     # Tampilkan info model
-#     model_info = classifier.get_model_info()
-#     print(f"\n📋 Informasi Model:")
-#     for key, value in model_info.items():
-#         print(f"  - {key}: {value}")
-    
-#     # Cari beberapa file audio untuk demo
-#     test_audio_dir = "dataset_preprocessed/stage2"
-#     demo_files = []
-    
-#     if os.path.exists(test_audio_dir):
-#         for category in LABEL_CLASSES:
-#             category_path = os.path.join(test_audio_dir, category)
-#             if os.path.exists(category_path):
-#                 audio_files = [f for f in os.listdir(category_path) if f.endswith('.wav')]
-#                 if audio_files:
-#                     # Ambil satu file dari setiap kategori
-#                     demo_file = os.path.join(category_path, audio_files[0])
-#                     demo_files.append(demo_file)
-    
-#     if not demo_files:
-#         print("\n⚠️  Tidak ada file audio demo yang ditemukan.")
-#         print("   Pastikan dataset ada di 'dataset_preprocessed/stage2'")
-#         return
-    
-#     print(f"\n🎵 Melakukan prediksi pada {len(demo_files)} file demo...")
-    
-#     # Prediksi batch
-#     results = classifier.predict_batch(demo_files, return_probabilities=True)
-    
-#     print(f"\n📊 Hasil Prediksi:")
-#     print("-" * 60)
-    
-#     for result in results:
-#         if 'error' in result:
-#             print(f"❌ {result['audio_file']}: {result['error']}")
-#         else:
-#             print(f"📁 File: {result['audio_file']}")
-#             print(f"🎯 Prediksi: {result['prediction_label']} (index: {result['prediction_index']})")
-#             print(f"📐 Fitur: {result['features_shape']}")
-            
-#             # Tampilkan probabilitas/scores jika ada
-#             if 'probabilities' in result:
-#                 print(f"📈 Probabilitas:")
-#                 for label, prob in result['probabilities'].items():
-#                     print(f"     {label}: {prob:.4f}")
-#             elif 'decision_scores' in result:
-#                 print(f"📈 Decision Scores:")
-#                 for label, score in result['decision_scores'].items():
-#                     print(f"     {label}: {score:.4f}")
-            
-#             print("-" * 60)
-
-# def test_single_prediction():
-#     """
-#     Test prediksi pada satu file audio
-#     """
-#     print("\n🔍 Test Prediksi Single File")
-#     print("=" * 40)
-    
-#     # Inisialisasi classifier
-#     classifier = BabyCryClassifier(
-#         model_path=BEST_MODEL_PATH,
-#         scaler_path=SCALER_PATH
-#     )
-    
-#     # Cari satu file audio untuk test
-#     test_audio_dir = "dataset_preprocessed/stage2"
-#     test_file = None
-    
-#     if os.path.exists(test_audio_dir):
-#         for category in LABEL_CLASSES:
-#             category_path = os.path.join(test_audio_dir, category)
-#             if os.path.exists(category_path):
-#                 audio_files = [f for f in os.listdir(category_path) if f.endswith('.wav')]
-#                 if audio_files:
-#                     test_file = os.path.join(category_path, audio_files[0])
-#                     break
-    
-#     if not test_file:
-#         print("⚠️  Tidak ada file audio test yang ditemukan.")
-#         return
-    
-#     print(f"🎵 Testing file: {os.path.basename(test_file)}")
-    
-#     try:
-#         # Prediksi
-#         result = classifier.predict(test_file, return_probabilities=True)
-        
-#         print(f"\n✅ Hasil Prediksi:")
-#         print(f"  - File: {result['audio_file']}")
-#         print(f"  - Prediksi: {result['prediction_label']}")
-#         print(f"  - Index: {result['prediction_index']}")
-#         print(f"  - Shape Fitur: {result['features_shape']}")
-        
-#         if 'probabilities' in result:
-#             print(f"  - Probabilitas Tertinggi: {max(result['probabilities'].values()):.4f}")
-        
-#     except Exception as e:
-#         print(f"❌ Error: {e}")
-
-# if __name__ == "__main__":
-#     print("🚀 CONTOH DEPLOYMENT KLASIFIKASI TANGISAN BAYI")
-#     print("=" * 80)
-    
-#     # Cek ketersediaan file yang diperlukan
-#     print("\n📋 Checking Required Files...")
-    
-#     files_to_check = [
-#         (BEST_MODEL_PATH, "Model SVM"),
-#         (SCALER_PATH, "Scaler"),
-#         ("dataset_preprocessed/stage2", "Dataset Test")
-#     ]
-    
-#     all_files_exist = True
-#     for file_path, description in files_to_check:
-#         if os.path.exists(file_path):
-#             print(f"  ✅ {description}: {file_path}")
-#         else:
-#             print(f"  ❌ {description}: {file_path} (tidak ditemukan)")
-#             all_files_exist = False
-    
-#     if not all_files_exist:
-#         print("\n⚠️  Beberapa file diperlukan tidak ditemukan.")
-#         print("   Pastikan Anda sudah menjalankan training dan preprocessing.")
-#         exit(1)
-    
-#     # Jalankan demo
-#     try:
-#         test_single_prediction()
-#         demo_prediction()
-        
-#         print("\n🎉 Demo deployment berhasil!")
-#         print("\n💡 Cara penggunaan untuk deployment:")
-#         print("   1. Import BabyCryClassifier dari file ini")
-#         print("   2. Inisialisasi dengan path model dan scaler")
-#         print("   3. Gunakan method predict() untuk prediksi single file")
-#         print("   4. Gunakan method predict_batch() untuk prediksi multiple files")
-        
-#     except Exception as e:
-#         print(f"\n❌ Error dalam demo: {e}")
-#         print("   Pastikan semua dependencies terinstall dan file tersedia.") 

@@ -27,9 +27,8 @@ import io
 # Import modules yang diperlukan
 sys.path.append('.')
 from deploy_preprocess import AudioPreprocessor, get_label_name, validate_audio_file
-from contoh_deploy import BabyCryClassifier
+from deploy_function import BabyCryClassifier
 from preprocess_config import *
-from svm_classes import KernelSVM, OneVsRestSVM
 
 # Konfigurasi halaman
 st.set_page_config(

@@ -27,7 +27,7 @@ Dataset Audio → Preprocessing → Feature Extraction → Model Training → De
 ```
 InfantCryClassification/
 ├── dataset ppdm2 asli/          # Dataset audio asli
-│   └── donateacry_corpus/       # Dataset DonateACry
+│   └── donateacry_corpus/       # Dataset 
 │       ├── belly_pain/          # Audio tangisan sakit perut
 │       ├── burping/             # Audio tangisan sendawa
 │       ├── discomfort/          # Audio tangisan tidak nyaman
@@ -37,18 +37,17 @@ InfantCryClassification/
 │   ├── stage1/                  # Tahap 1: Audio preprocessing
 │   ├── stage2/                  # Tahap 2: Audio augmentation
 │   └── stage3/                  # Tahap 3: Feature extraction
-├── preprocessing_config.py      # Konfigurasi parameter preprocessing
-├── preprocess1.py              # Script preprocessing tahap 1
-├── preprocess2.py              # Script preprocessing tahap 2
-├── preprocess3.py              # Script preprocessing tahap 3
-├── svm_classes.py              # Implementasi class SVM
-├── svm_python.py               # Script training model SVM
-├── svm.ipynb                   # Jupyter notebook eksperimen
-├── deploy_preprocess.py        # Preprocessing untuk deployment
-├── example_deployment.py       # Contoh penggunaan model
-├── streamlit_app.py            # Aplikasi web Streamlit
-├── best_svm_model.pkl          # Model SVM terbaik (trained)
-└── requirements.txt            # Dependencies Python
+├── preprocess_config.py         # Konfigurasi parameter preprocessing
+├── preprocess1.py               # Script preprocessing tahap 1
+├── preprocess2.py               # Script preprocessing tahap 2
+├── preprocess3.py               # Script preprocessing tahap 3
+├── svm_python.py                # Script model SVM versi python
+├── svm.ipynb                    # Jupyter notebook (media eksperimen)
+├── deploy_preprocess.py         # Preprocessing untuk deployment
+├── deploy_function.py           # Flow penerapan model pada deployment
+├── streamlit_fix.py             # Aplikasi web Streamlit
+├── svm_classes.py               # Bridge deployment streamlit (Pengganti svm_python.py)
+└── best_svm_model.pkl           # Model SVM terbaik (trained)
 ```
 
 ##  Pipeline Preprocessing
@@ -109,7 +108,7 @@ InfantCryClassification/
 
 ### Implementasi SVM From Scratch
 
-#### 1. Kernel SVM dengan SMO Algorithm (`svm_classes.py`)
+#### 1. Kernel SVM dengan SMO Algorithm (`svm_python.py` atau `svm.ipynb`)
 
 **Sequential Minimal Optimization (SMO)**:
 - Algoritma optimasi untuk menyelesaikan dual problem SVM
@@ -131,7 +130,7 @@ InfantCryClassification/
 - Menggunakan Platt scaling pada decision function
 - Normalisasi dengan softmax untuk mendapatkan probabilitas
 
-### Training Process (`svm_python.py`)
+### Training Process (`svm_python.py` atau `svm.ipynb`)
 
 #### 1. Grid Search Hyperparameter
 ```python
@@ -169,7 +168,7 @@ param_grid = {
 - Ekstraksi fitur yang sama dengan training pipeline
 - Standarisasi menggunakan scaler yang sudah dilatih
 
-### 2. Model Wrapper (`contoh_deploy.py`)
+### 2. Model Wrapper (`deploy_function.py`)
 
 **Class BabyCryClassifier**:
 - Interface sederhana untuk prediksi
@@ -202,7 +201,7 @@ result = classifier.predict("audio_file.wav", return_probabilities=True)
 - **Main Panel**: Hasil prediksi dan visualisasi
 - **Responsive Design**: Optimized untuk desktop dan mobile
 
-**Menjalankan Aplikasi**:
+**Menjalankan Aplikasi (Perhatikan Requirement di bawah sebelum menjalankan Streamlit)**:
 ```bash
 streamlit run streamlit_fix.py
 ```
@@ -236,7 +235,7 @@ cd InfantCryClassification
 ```
 
 ### 2. Install Dependencies
-- install seluruh dependensi sesuai informasi requirement dibawah
+- Install seluruh dependensi sesuai informasi requirement dibawah
 
 ### 3. Setup Dataset
 - Download dataset melalui dataset kaggle berikut https://www.kaggle.com/datasets/warcoder/infant-cry-audio-corpus
@@ -274,16 +273,9 @@ streamlit run streamlit_fix.py
 
 ### Python Dependencies
 ```
-streamlit>=1.28.0
-numpy>=1.21.0
-pandas>=1.3.0
-plotly>=5.0.0
-librosa>=0.9.0
-soundfile>=0.10.0
-pydub>=0.25.0
-scipy>=1.7.0
-scikit-learn>=1.0.0
-joblib>=1.1.0
+Tidak diperlukan untuk menginstall dependencies lainnya, cukup lakukan :
+- Set interpreter virtual environtment pada selected interpreter .\.venv\Scripts\python.exe && 
+- Input command pada terminal IDE ".venv\Scripts\Activate"
 ```
 
 ##  Konfigurasi
