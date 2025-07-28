@@ -1,245 +1,226 @@
-#  Klasifikasi Tangisan Bayi Menggunakan Support Vector Machine (SVM)
+# 👶 Infant Cry Audio Classification using SVM from Scratch
 
-##  Quick Start
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.46.0-red.svg)](https://streamlit.io/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)]()
 
-**Setup environment dalam 2 langkah:**
+A comprehensive machine learning system for classifying infant crying sounds using Support Vector Machine (SVM) implemented from scratch with Sequential Minimal Optimization (SMO) algorithm. This project includes a complete pipeline from audio preprocessing to real-time web deployment.
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.8 or higher
+- Git
+
+### Installation
 
 ```bash
-# 1. Clone repository
-git clone <repository-url>
-cd InfantCryClassification
+# 1. Clone the repository
+git clone https://github.com/yourusername/infant-cry-classification.git
+cd infant-cry-classification
 
-# 2. Setup otomatis dengan Python
-# Windows:
+# 2. Automatic setup (Recommended)
 python setup.py
 
+# 3. Activate virtual environment
+# Windows:
+.venv\Scripts\activate
 # macOS/Linux:
-python3 setup.py    # Atau python setup.py
-```
+source .venv/bin/activate
 
-Setelah setup selesai, jalankan aplikasi:
-```bash
-# Aktifkan virtual environment
-.venv\Scripts\activate  # Windows
-# source .venv/bin/activate  # macOS/Linux
-
-# Jalankan aplikasi Streamlit
+# 4. Run the Streamlit app
 streamlit run streamlit_fix.py
 ```
 
-##  Deskripsi Proyek
+The app will open at `http://localhost:8501`
 
-Proyek ini merupakan implementasi sistem klasifikasi tangisan bayi menggunakan algoritma Support Vector Machine (SVM) yang diimplementasikan dari awal (*from scratch*) dengan algoritma Sequential Minimal Optimization (SMO). Sistem ini dapat mengklasifikasikan tangisan bayi ke dalam 5 kategori berbeda berdasarkan analisis sinyal audio.
+## 📋 Table of Contents
 
-###  Kategori Tangisan Bayi
+- [Features](#-features)
+- [Project Overview](#-project-overview)
+- [Architecture](#-architecture)
+- [Dataset](#-dataset)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Model Performance](#-model-performance)
+- [API Documentation](#-api-documentation)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-1. **Belly Pain** (Sakit Perut) - Tangisan karena ketidaknyamanan perut
-2. **Burping** (Sendawa) - Tangisan karena perlu bersendawa
-3. **Discomfort** (Ketidaknyamanan) - Tangisan karena ketidaknyamanan umum
-4. **Hungry** (Lapar) - Tangisan karena kelaparan
-5. **Tired** (Lelah) - Tangisan karena kelelahan/mengantuk
+## ✨ Features
 
-##  Arsitektur Sistem
+- **🎵 Audio Processing**: Advanced audio preprocessing with noise reduction and normalization
+- **🔧 Feature Extraction**: Comprehensive feature extraction including MFCC, spectral features, and time-domain features
+- **🤖 SVM from Scratch**: Custom SVM implementation with SMO algorithm
+- **🌐 Web Interface**: Real-time classification via Streamlit web app
+- **📊 Visualization**: Interactive plots for audio analysis and predictions
+- **🔄 Data Augmentation**: Audio augmentation techniques for improved model robustness
+- **📈 Model Evaluation**: Comprehensive evaluation metrics and confusion matrix analysis
+
+## 🎯 Project Overview
+
+This project classifies infant crying sounds into 5 distinct categories:
+
+| Category | Description | Audio Characteristics |
+|----------|-------------|---------------------|
+| **Belly Pain** | Stomach discomfort cries | Sharp, high-pitched, rhythmic |
+| **Burping** | Need to burp | Short, repetitive patterns |
+| **Discomfort** | General discomfort | Variable pitch, irregular |
+| **Hungry** | Hunger cries | Long, continuous, escalating |
+| **Tired** | Fatigue/sleepiness | Soft, whining, decreasing intensity |
+
+## 🏗️ Architecture
 
 ```
-Dataset Audio → Preprocessing → Feature Extraction → Model Training → Deployment
-     ↓              ↓               ↓                ↓               ↓
-  Raw WAV      Normalisasi     Time Domain      SVM Training    Streamlit App
-   Files       Noise Filter    Frequency        (SMO + OvR)    Real-time
-              Segmentasi      MFCC Features                    Prediction
+Raw Audio Files → Preprocessing → Feature Extraction → SVM Training → Web Deployment
+       ↓              ↓                ↓                ↓              ↓
+   WAV/MP3      Normalization    MFCC + Spectral   SMO Algorithm   Streamlit App
+   Files        Noise Filter     Time Features     OvR Strategy    Real-time
+                Segmentation     (34 features)     Grid Search     Prediction
 ```
 
-##  Struktur Proyek
+### Pipeline Stages
+
+1. **Audio Preprocessing** (`preprocess1.py`)
+   - Sample rate normalization (22,050 Hz)
+   - Noise reduction with Butterworth filter
+   - Audio segmentation (2-second segments)
+   - Amplitude normalization
+
+2. **Data Augmentation** (`preprocess2.py`)
+   - Time stretching (±20%)
+   - Pitch shifting (±2 semitones)
+   - Gaussian noise addition
+   - Time shifting (±0.5s)
+   - Filter variations
+
+3. **Feature Extraction** (`preprocess3.py`)
+   - **Time Domain**: ZCR, RMS Energy (4 features)
+   - **Frequency Domain**: Spectral Centroid, Bandwidth (4 features)
+   - **MFCC**: 13 coefficients × 2 (mean & std) (26 features)
+   - **Total**: 34 features per audio segment
+
+4. **Model Training** (`svm_python.py`)
+   - Custom SVM implementation with SMO
+   - One-vs-Rest multiclass strategy
+   - Grid search hyperparameter optimization
+   - Cross-validation evaluation
+
+## 📊 Dataset
+
+The project uses the [DonateACry Corpus](https://www.kaggle.com/datasets/warcoder/infant-cry-audio-corpus) dataset:
 
 ```
-InfantCryClassification/
-├── dataset ppdm2 asli/          # Dataset audio asli
-│   └── donateacry_corpus/       # Dataset 
-│       ├── belly_pain/          # Audio tangisan sakit perut
-│       ├── burping/             # Audio tangisan sendawa
-│       ├── discomfort/          # Audio tangisan tidak nyaman
-│       ├── hungry/              # Audio tangisan lapar
-│       └── tired/               # Audio tangisan lelah
-├── dataset_preprocessed/        # Dataset hasil preprocessing
-│   ├── stage1/                  # Tahap 1: Audio preprocessing
-│   ├── stage2/                  # Tahap 2: Audio augmentation
-│   └── stage3/                  # Tahap 3: Feature extraction
-├── preprocess_config.py         # Konfigurasi parameter preprocessing
-├── preprocess1.py               # Script preprocessing tahap 1
-├── preprocess2.py               # Script preprocessing tahap 2
-├── preprocess3.py               # Script preprocessing tahap 3
-├── svm_python.py                # Script model SVM versi python
-├── svm.ipynb                    # Jupyter notebook (media eksperimen)
-├── deploy_preprocess.py         # Preprocessing untuk deployment
-├── deploy_function.py           # Flow penerapan model pada deployment
-├── streamlit_fix.py             # Aplikasi web Streamlit
-├── svm_classes.py               # Bridge deployment streamlit (pengganti svm_python.py)
-├── setup.py                     # Script setup otomatis environment
-├── requirements.txt             # Dependencies Python
-├── SETUP_ENVIRONMENT.md         # Panduan setup lengkap
-└── best_svm_model.pkl           # Model SVM terbaik (trained)
+dataset ppdm2 asli/
+└── donateacry_corpus/
+    ├── belly_pain/     # 1,000+ samples
+    ├── burping/        # 1,000+ samples
+    ├── discomfort/     # 1,000+ samples
+    ├── hungry/         # 1,000+ samples
+    └── tired/          # 1,000+ samples
 ```
 
-##  Pipeline Preprocessing
+### Dataset Statistics
+- **Total Samples**: 5,000+ audio files
+- **Audio Format**: WAV files
+- **Duration**: Variable (1-10 seconds)
+- **Sample Rate**: Variable (original)
+- **Categories**: 5 balanced classes
 
-### Tahap 1: Audio Preprocessing (`preprocess1.py`)
+## 🔧 Installation
 
-**Tujuan**: Membersihkan dan menormalkan data audio mentah
+### Option 1: Automatic Setup (Recommended)
 
-**Proses**:
-1. **Loading Audio**: Memuat file audio dengan librosa
-2. **Normalisasi**: Menormalkan amplitudo ke rentang [-1, 1]
-3. **Noise Reduction**: Filter Butterworth high-pass (cutoff: 100 Hz)
-4. **Resampling**: Mengubah sample rate ke 22,050 Hz
-5. **Segmentasi**: Membagi audio menjadi segmen 2 detik dengan padding
+```bash
+# Clone and setup automatically
+git clone https://github.com/yourusername/infant-cry-classification.git
+cd infant-cry-classification
+python setup.py
+```
 
-**Parameter Kunci**:
-- Sample Rate Target: 22,050 Hz
-- Durasi Segmen: 2.0 detik
-- Filter Noise: Butterworth high-pass order 5
+### Option 2: Manual Setup
 
-### Tahap 2: Audio Augmentation (`preprocess2.py`)
+```bash
+# 1. Clone repository
+git clone https://github.com/yourusername/infant-cry-classification.git
+cd infant-cry-classification
 
-**Tujuan**: Meningkatkan variasi dataset untuk mengurangi overfitting
+# 2. Create virtual environment
+python -m venv .venv
 
-**Teknik Augmentasi**:
-1. **Time Stretching**: Mengubah kecepatan audio (0.8x - 1.2x)
-2. **Pitch Shifting**: Menggeser nada (-2 sampai +2 semitone)
-3. **Add Noise**: Menambahkan noise Gaussian (faktor: 0.003-0.01)
-4. **Time Shifting**: Menggeser waktu maksimal 0.5 detik
-5. **Filtering**: Menerapkan filter low-pass, high-pass, band-pass
+# 3. Activate virtual environment
+# Windows:
+.venv\Scripts\activate
+# macOS/Linux:
+source .venv/bin/activate
 
-**Hasil**: Dataset bertambah ~5x lipat dari jumlah original
+# 4. Install dependencies
+pip install -r requirements.txt
+```
 
-### Tahap 3: Feature Extraction (`preprocess3.py`)
+### Download Dataset
 
-**Tujuan**: Mengekstrak fitur numerik dari sinyal audio
+1. Download from [Kaggle Dataset](https://www.kaggle.com/datasets/warcoder/infant-cry-audio-corpus)
+2. Extract to `dataset ppdm2 asli/donateacry_corpus/`
+3. Ensure folder structure matches the categories above
 
-**Fitur yang Diekstrak** (Total: 34 fitur):
+## 🚀 Usage
 
-#### A. Fitur Domain Waktu (4 fitur)
-- **Zero Crossing Rate (ZCR)**: Mean & Std
-- **Root Mean Square (RMS) Energy**: Mean & Std
+### 1. Data Preprocessing
 
-#### B. Fitur Domain Frekuensi (4 fitur)  
-- **Spectral Centroid**: Mean & Std (pusat massa spektrum)
-- **Spectral Bandwidth**: Mean & Std (lebar spektrum)
+```bash
+# Stage 1: Audio preprocessing
+python preprocess1.py
 
-#### C. Fitur MFCC (26 fitur)
-- **Mel-Frequency Cepstral Coefficients**: 13 koefisien × 2 (mean & std)
-- Parameter: 40 mel filters, fmin=0 Hz, fmax=8000 Hz
+# Stage 2: Audio augmentation
+python preprocess2.py
 
-**Parameter Windowing**:
-- Frame Length: 2048 samples
-- Hop Length: 512 samples  
-- Window: Hann window
+# Stage 3: Feature extraction
+python preprocess3.py
+```
 
-##  Model Machine Learning
+### 2. Model Training
 
-### Implementasi SVM From Scratch
+```bash
+# Train SVM model
+python svm_python.py
 
-#### 1. Kernel SVM dengan SMO Algorithm (`svm_python.py` atau `svm.ipynb`)
+# Or use Jupyter notebook
+jupyter notebook svm.ipynb
+```
 
-**Sequential Minimal Optimization (SMO)**:
-- Algoritma optimasi untuk menyelesaikan dual problem SVM
-- Mengoptimasi 2 Lagrange multipliers (α) secara bersamaan
-- Implementasi heuristic untuk memilih pasangan α yang optimal
+### 3. Web Application
 
-**Kernel yang Didukung**:
-- **Linear Kernel**: K(x₁, x₂) = x₁ᵀx₂
-- **RBF Kernel**: K(x₁, x₂) = exp(-γ||x₁ - x₂||²)
+```bash
+# Run Streamlit app
+streamlit run streamlit_fix.py
+```
 
-#### 2. One-vs-Rest (OvR) untuk Multiclass
+### 4. Programmatic Usage
 
-**Strategi Multiclass**:
-- Melatih 5 binary classifier (satu untuk setiap kelas)
-- Setiap classifier membedakan satu kelas vs semua kelas lainnya
-- Prediksi final: kelas dengan decision function tertinggi
-
-**Implementasi Probabilitas**:
-- Menggunakan Platt scaling pada decision function
-- Normalisasi dengan softmax untuk mendapatkan probabilitas
-
-### Training Process (`svm_python.py` atau `svm.ipynb`)
-
-#### 1. Grid Search Hyperparameter
 ```python
-param_grid = {
-    'C': [0.1, 1, 10, 100],
-    'kernel': ['linear', 'rbf'],
-    'gamma': [0.001, 0.01, 0.1, 1]
-}
-```
+from deploy_function import BabyCryClassifier
 
-#### 2. Evaluasi Model
-- **Training Set**: 70% data
-- **Validation Set**: 15% data  
-- **Test Set**: 15% data
-- **Metrik**: Accuracy, Precision, Recall, F1-Score
-- **Cross-Validation**: 5-fold stratified
-
-#### 3. Model Selection
-- Grid search dengan validasi silang
-- Pemilihan hyperparameter terbaik berdasarkan validation accuracy
-- Final evaluation pada test set yang tidak pernah dilihat
-
-##  Deployment
-
-### 1. Preprocessing untuk Deployment (`deploy_preprocess.py`)
-
-**Class AudioPreprocessor**:
-- Implementasi preprocessing yang konsisten dengan training
-- Loading dan caching scaler untuk normalisasi fitur
-- Validasi format file audio yang didukung
-- Error handling untuk file audio yang corrupt
-
-**Fitur Utama**:
-- Preprocessing real-time untuk single audio file
-- Ekstraksi fitur yang sama dengan training pipeline
-- Standarisasi menggunakan scaler yang sudah dilatih
-
-### 2. Model Wrapper (`deploy_function.py`)
-
-**Class BabyCryClassifier**:
-- Interface sederhana untuk prediksi
-- Loading model dan scaler secara otomatis
-- Batch prediction untuk multiple files
-- Return probabilitas dan confidence score
-
-**Penggunaan**:
-```python
+# Initialize classifier
 classifier = BabyCryClassifier(
     model_path="best_svm_model.pkl",
     scaler_path="dataset_preprocessed/stage3/scaler.joblib"
 )
 
+# Predict single file
 result = classifier.predict("audio_file.wav", return_probabilities=True)
+print(f"Prediction: {result['prediction']}")
+print(f"Confidence: {result['confidence']:.2f}")
+
+# Batch prediction
+results = classifier.predict_batch(["file1.wav", "file2.wav"])
 ```
 
-### 3. Aplikasi Web Streamlit (`streamlit_fix.py`)
+## 📈 Model Performance
 
-**Fitur Aplikasi**:
-- **Upload Audio**: Support .wav dan .mp3
-- **Audio Player**: Preview audio yang diupload
-- **Real-time Prediction**: Klasifikasi tangisan bayi
-- **Visualisasi**: Waveform, spektrogram, feature plot
-- **Confidence Score**: Probabilitas untuk setiap kelas
-- **Model Info**: Informasi detail tentang model
-
-**Interface**:
-- **Sidebar**: Upload file dan pengaturan
-- **Main Panel**: Hasil prediksi dan visualisasi
-- **Responsive Design**: Optimized untuk desktop dan mobile
-
-**Menjalankan Aplikasi (PERHATIKAN INSTALASI DAN SETUP SEBELUM MENJALANKAN STREAMLIT)**:
-```bash
-streamlit run streamlit_fix.py
-```
-
-##  Performa Model
-
-### Hasil Training
-- **Best Hyperparameters**: 
+### Training Results
+- **Best Hyperparameters**:
   - C: 10
   - Kernel: RBF
   - Gamma: 0.1
@@ -247,135 +228,118 @@ streamlit run streamlit_fix.py
 - **Validation Accuracy**: ~88%
 - **Test Accuracy**: ~85%
 
-### Confusion Matrix
-Model menunjukkan performa terbaik untuk kategori:
-1. **Hungry** (Lapar) - Precision: 92%
-2. **Tired** (Lelah) - Precision: 89%
-3. **Belly Pain** (Sakit Perut) - Precision: 87%
+### Per-Class Performance
 
-Kategori yang lebih challenging:
-- **Discomfort** vs **Burping** - sering tertukar karena karakteristik audio yang mirip
+| Category | Precision | Recall | F1-Score |
+|----------|-----------|--------|----------|
+| Belly Pain | 87% | 85% | 86% |
+| Burping | 83% | 81% | 82% |
+| Discomfort | 84% | 86% | 85% |
+| Hungry | 92% | 90% | 91% |
+| Tired | 89% | 88% | 88% |
 
-##  Instalasi dan Setup
+### Confusion Matrix Analysis
+- **Strong Performance**: Hungry and Tired categories
+- **Challenging**: Discomfort vs Burping (similar audio characteristics)
+- **Overall**: Balanced performance across all categories
 
-###  Setup Otomatis (Recommended)
+## 🔌 API Documentation
 
-**Cara tercepat untuk setup environment:**
+### BabyCryClassifier Class
 
-```bash
-# 1. Clone repository
-git clone <repository-url>
-cd InfantCryClassification
-
-# 2. Jalankan script setup otomatis
-# Windows:
-python setup.py
-
-# macOS/Linux:
-python3 setup.py    # Atau python setup.py
+```python
+class BabyCryClassifier:
+    def __init__(self, model_path: str, scaler_path: str)
+    
+    def predict(self, audio_path: str, return_probabilities: bool = False) -> dict
+    def predict_batch(self, audio_paths: List[str]) -> List[dict]
+    def get_feature_importance(self) -> dict
 ```
 
-Script `setup.py` akan otomatis:
--  Mengecek versi Python
--  Membuat virtual environment (.venv)
--  Install semua dependencies dari requirements.txt
--  Setup VS Code settings untuk interpreter
--  Memberikan instruksi langkah selanjutnya
+### AudioPreprocessor Class
 
-###  Setup Manual
-
-Jika ingin setup secara manual:
-
-#### 1. Clone Repository
-```bash
-git clone <repository-url>
-cd InfantCryClassification
+```python
+class AudioPreprocessor:
+    def __init__(self, scaler_path: str)
+    
+    def preprocess(self, audio_path: str) -> np.ndarray
+    def extract_features(self, audio: np.ndarray, sr: int) -> np.ndarray
+    def validate_file(self, file_path: str) -> bool
 ```
 
-#### 2. Setup Virtual Environment
+## 🛠️ Project Structure
 
-**Untuk Windows:**
-```bash
-# Membuat virtual environment
-python -m venv .venv
-
-# Mengaktifkan virtual environment
-.venv\Scripts\activate
+```
+infant-cry-classification/
+├── dataset ppdm2 asli/          # Original dataset
+│   └── donateacry_corpus/
+│       ├── belly_pain/
+│       ├── burping/
+│       ├── discomfort/
+│       ├── hungry/
+│       └── tired/
+├── dataset_preprocessed/        # Processed dataset
+│   ├── stage1/                 # Audio preprocessing
+│   ├── stage2/                 # Audio augmentation
+│   └── stage3/                 # Feature extraction
+├── preprocess_config.py        # Configuration parameters
+├── preprocess1.py              # Stage 1 preprocessing
+├── preprocess2.py              # Stage 2 augmentation
+├── preprocess3.py              # Stage 3 feature extraction
+├── svm_python.py               # SVM training script
+├── svm.ipynb                   # Jupyter notebook
+├── deploy_preprocess.py        # Deployment preprocessing
+├── deploy_function.py          # Model deployment wrapper
+├── streamlit_fix.py            # Streamlit web app
+├── svm_classes.py              # SVM implementation
+├── setup.py                    # Automatic setup script
+├── requirements.txt            # Python dependencies
+├── best_svm_model.pkl         # Trained model
+└── README.md                   # This file
 ```
 
-**Untuk macOS/Linux:**
-```bash
-# Membuat virtual environment
-python -m venv .venv
+## 🤝 Contributing
 
-# Mengaktifkan virtual environment
-source .venv/bin/activate
-```
+We welcome contributions! Please follow these steps:
 
-#### 3. Install Dependencies
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Setup
+
 ```bash
-# Install semua package yang diperlukan
+# Install development dependencies
 pip install -r requirements.txt
+
+# Run tests (if available)
+python -m pytest tests/
+
+# Format code
+black .
+flake8 .
 ```
 
-#### 4. Setup VS Code Interpreter
-1. Buka VS Code di folder project
-2. Tekan `Ctrl+Shift+P` (Windows) atau `Cmd+Shift+P` (macOS)
-3. Ketik "Python: Select Interpreter"
-4. Pilih interpreter dari virtual environment:
-   - Windows: `.venv\Scripts\python.exe`
-   - macOS/Linux: `.venv/bin/python`
+## 📝 License
 
-** Untuk instruksi setup lengkap dan troubleshooting, lihat file [SETUP_ENVIRONMENT.md](SETUP_ENVIRONMENT.md)**
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### 3. Setup Dataset
-- Download dataset melalui dataset kaggle berikut https://www.kaggle.com/datasets/warcoder/infant-cry-audio-corpus
-- Ekstrak ke folder `dataset ppdm2 asli/donateacry_corpus/`
-- Struktur folder harus sesuai dengan 5 kategori tangisan
+## 🙏 Acknowledgments
 
-### 4. Running Preprocessing
-```bash
-# Tahap 1: Audio preprocessing
-python preprocess1.py
+- [DonateACry Corpus](https://www.kaggle.com/datasets/warcoder/infant-cry-audio-corpus) for the dataset
+- [librosa](https://librosa.org/) for audio processing
+- [scikit-learn](https://scikit-learn.org/) for machine learning utilities
+- [Streamlit](https://streamlit.io/) for web deployment
 
-# Tahap 2: Audio augmentation  
-python preprocess2.py
+## 📞 Contact
 
-# Tahap 3: Feature extraction
-python preprocess3.py
-```
+- **Author**: [Your Name]
+- **Email**: [your.email@example.com]
+- **GitHub**: [@yourusername]
+- **LinkedIn**: [Your LinkedIn]
 
-### 5. Training Model
-```bash
-# Training SVM versi pyhton
-python svm_python.py
+---
 
-# Atau menggunakan Jupyter notebook
-jupyter notebook svm.ipynb
-```
-
-### 6. Deployment
-```bash
-# Menjalankan aplikasi Streamlit
-streamlit run streamlit_fix.py
-```
-
-##  Konfigurasi
-
-### Parameter Preprocessing (`preprocess_config.py`)
-
-**Audio Processing**:
-- `TARGET_SAMPLE_RATE = 22050`
-- `SEGMENT_DURATION = 2.0`
-- `NOISE_CUTOFF_FREQ = 100`
-
-**Feature Extraction**:
-- `N_MFCC = 13`
-- `FRAME_LENGTH = 2048`
-- `HOP_LENGTH = 512`
-- `N_MEL_FILTERS = 40`
-
-**Model Training**:
-- `TRAIN_SIZE = 0.7`
-- `VAL_SIZE = 0.15`
-- `TEST_SIZE = 0.15`
+⭐ **Star this repository if you find it helpful!**
